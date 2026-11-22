@@ -122,7 +122,7 @@ def convert(index)-> dict:
     }
 
 def main(input_path: Path | None = None, generalized_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")) -> Path:
-    mrpack = choose_file(input_path, Path(__file__).parent / 'inputs')
+    mrpack = choose_file(input_path, Path(__file__).parent / 'inputs', wait = True)
 
     unzip(mrpack,TEMP_PATH)
     with open(TEMP_INDEX_PATH, encoding="utf-8") as indexfile:

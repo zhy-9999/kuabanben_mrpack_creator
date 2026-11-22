@@ -44,20 +44,32 @@ def makezip(path: Path, zip: Path | None = None) -> Path:
     tmp_zip.replace(zip)
     return zip
 
-def choose_file(path: Path | None = None, default: Path | None = None) -> Path:
+def choose_file(path: Path | None = None, default: Path | None = None, wait = False) -> Path:
+    need_wait = wait
     if (path is None):
         if default is None:
             raise OSError
         default.mkdir(parents=True, exist_ok=True)
-        files = tuple(sorted(default.iterdir()))
-        for i in range(len(files)):
-            log('INFO',f'{i}: {files[i]}')
-        file = files[int(input(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} | INPUT    | 请输入所选文件序号: '))]
+        files = tuple(sorted(default.iterdir(),reverse=True))
+        if len(files) <= 0:
+            raise OSError
+        elif len(files) == 1:
+            file = files[0]
+            log('INFO',f'唯一可选文件（夹）: {file}')
+        else:
+            for i in range(len(files)):
+                log('INFO',f'{i+1}: {files[i]}')
+            file = files[int(input(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} | INPUT    | 请输入所选文件（夹）序号: '))-1]
+            need_wait = False
     else:
         file = path
     if not file.exists():
         raise OSError
-    log('INFO', f'{'选择' if path is None else '输入'}{'文件夹' if file.is_dir() else '文件'}: {file}')
+
+    result = f'{'选择' if path is None else '输入'}{'文件夹' if file.is_dir() else '文件'}: {file}'
+    log('INFO', result)
+    if need_wait:
+        input(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} | INFO     | 请按回车以继续...')
     return file
 
 def easy_run(*funcs: Callable, first_input = None, default = None):

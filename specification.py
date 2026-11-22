@@ -118,7 +118,7 @@ def ask_version(mc_ver: str | None = None) -> str:
 
 def main(generalized_path: Path | None = None, mc_ver: str | None = None, forcheck_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
 
-    generalized = choose_file(generalized_path, Path(__file__).parent / "generalized")
+    generalized = choose_file(generalized_path, Path(__file__).parent / "generalized", wait = True)
     mods = generalized / "mods.toml"
     overrides = generalized / "overrides"
 
@@ -137,7 +137,7 @@ def main(generalized_path: Path | None = None, mc_ver: str | None = None, forche
 
 def final(forcheck_path: Path | None = None, output_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
 
-    checked = choose_file(forcheck_path, Path(__file__).parent / "forcheck")
+    checked = choose_file(forcheck_path, Path(__file__).parent / "forcheck", wait = True)
 
     if output_path is None:
         output_mrpack = Path(__file__).parent / "output" / f"{name}.mrpack"
