@@ -86,12 +86,12 @@ def run_modfetch(config_path: Path = RUNTIME_CONFIG, times = 1) -> Path:
             log('FAILURE', 'ModFetch 未给出任何错误报告')
         raise RuntimeError(result.stderr)
 
-def retry_fetch(MODS: Path, mc_ver: str,*,count: int = 3) -> Path:
+def retry_fetch(mods: Path, mc_ver: str,*,count: int = 3) -> Path:
     ignores = set()
     fetched = None
     for i in range(count):
         try:
-            temp_cfg = build_temp_config(mc_ver,MODS,ignores)
+            temp_cfg = build_temp_config(mc_ver,mods,ignores)
             fetched = run_modfetch(temp_cfg,i+1)
         except RuntimeError as e:
             errs = str(e)
@@ -109,14 +109,14 @@ def retry_fetch(MODS: Path, mc_ver: str,*,count: int = 3) -> Path:
 
 def ask_version(mc_ver: str | None = None) -> str:
     if not (mc_ver is None):
-        return mc_ver
+        return str(mc_ver)
     while True:
         v = input(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} | INPUT    | 请输入目标 Minecraft 版本: ').strip()
         if v:
-            return v
+            return str(v)
         log('INFO', f'版本 {v} 无效，请重新输入。')
 
-def main(mc_ver: str | None = None, generalized_path: Path | None = None, forcheck_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
+def main(generalized_path: Path | None = None, mc_ver: str | None = None, forcheck_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
 
     generalized = choose_file(generalized_path, Path(__file__).parent / "generalized")
     mods = generalized / "mods.toml"
@@ -147,5 +147,6 @@ def final(forcheck_path: Path | None = None, output_path: Path | None = None, na
     makezip(checked, output_mrpack)
     log('SUCCESS', f'输出文件: {output_mrpack}')
     return output_mrpack
+
 if __name__ == '__main__':
     easy_run(main,final)
