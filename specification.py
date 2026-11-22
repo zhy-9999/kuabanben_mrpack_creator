@@ -140,7 +140,7 @@ def final(forcheck_path: Path | None = None, output_path: Path | None = None, na
     checked = choose_file(forcheck_path, Path(__file__).parent / "forcheck", wait = True)
 
     if output_path is None:
-        output_mrpack = Path(__file__).parent / "output" / f"{name}.mrpack"
+        output_mrpack = Path(__file__).parent / "outputs" / f"{name}.mrpack"
     else:
         output_mrpack = output_path
 
