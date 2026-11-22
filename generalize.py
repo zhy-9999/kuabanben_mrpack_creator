@@ -12,7 +12,7 @@ import time
 _last_start = 0.0
 
 _cache = dict()
-TEMP_PATH = Path(__file__).parent / 'temps' / "generalize"
+TEMP_PATH = main_path() / 'temps' / "generalize"
 TEMP_INDEX_PATH = TEMP_PATH / "modrinth.index.json"
 TEMP_MODS_PATH = TEMP_PATH / "mods.toml"
 
@@ -122,7 +122,7 @@ def convert(index)-> dict:
     }
 
 def main(input_path: Path | None = None, generalized_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")) -> Path:
-    mrpack = choose_file(input_path, Path(__file__).parent / 'inputs', wait = True)
+    mrpack = choose_file(input_path, main_path() / 'inputs', wait = True)
 
     unzip(mrpack,TEMP_PATH)
     with open(TEMP_INDEX_PATH, encoding="utf-8") as indexfile:
@@ -137,7 +137,7 @@ def main(input_path: Path | None = None, generalized_path: Path | None = None, n
     TEMP_INDEX_PATH.unlink(missing_ok=True)
 
     if generalized_path is None:
-        output_folder = Path(__file__).parent / "generalized" / name
+        output_folder = main_path() / "generalized" / name
     else:
         output_folder = generalized_path
 

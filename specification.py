@@ -9,7 +9,7 @@ import tomllib
 import tomli_w
 from idk import *
 
-TEMP_PATH = Path(__file__).parent / "temps" / "specification"
+TEMP_PATH = main_path() / "temps" / "specification"
 RUNTIME_CONFIG = TEMP_PATH / ".modfetch_runtime.toml"
 TEMP_MRPACK = TEMP_PATH / "dist"
 CFG = {
@@ -118,7 +118,7 @@ def ask_version(mc_ver: str | None = None) -> str:
 
 def main(generalized_path: Path | None = None, mc_ver: str | None = None, forcheck_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
 
-    generalized = choose_file(generalized_path, Path(__file__).parent / "generalized", wait = True)
+    generalized = choose_file(generalized_path, main_path() / "generalized", wait = True)
     mods = generalized / "mods.toml"
     overrides = generalized / "overrides"
 
@@ -126,7 +126,7 @@ def main(generalized_path: Path | None = None, mc_ver: str | None = None, forche
     output_mrpack = retry_fetch(mods,ask_version(mc_ver))
 
     if forcheck_path is None:
-        output_folder = Path(__file__).parent / "forcheck" / name
+        output_folder = main_path() / "forcheck" / name
     else:
         output_folder = forcheck_path
 
@@ -137,10 +137,10 @@ def main(generalized_path: Path | None = None, mc_ver: str | None = None, forche
 
 def final(forcheck_path: Path | None = None, output_path: Path | None = None, name: str = datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S")):
 
-    checked = choose_file(forcheck_path, Path(__file__).parent / "forcheck", wait = True)
+    checked = choose_file(forcheck_path, main_path() / "forcheck", wait = True)
 
     if output_path is None:
-        output_mrpack = Path(__file__).parent / "outputs" / f"{name}.mrpack"
+        output_mrpack = main_path() / "outputs" / f"{name}.mrpack"
     else:
         output_mrpack = output_path
 

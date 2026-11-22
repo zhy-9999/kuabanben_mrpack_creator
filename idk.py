@@ -4,7 +4,9 @@ import shutil
 import zipfile
 import datetime
 
-ZIP_TEMP = Path(__file__).parent / 'temps' / "zip"
+main_path = lambda: Path(__file__).parent
+ZIP_TEMP = main_path() / 'temps' / "zip"
+
 def log(level: str,data) -> None:
     print(f'{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")} | {level.upper()+' '*(8-len(level))} | {data}')
 
